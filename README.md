@@ -16,7 +16,7 @@ Take note, this is experimental and don't always produce expected results.
 1) Copy/unzip this module into your existing Storage Boxx folder.
 2) I have tried multiple AI models, [codellama-7b-instruct.Q5_K_M.gguf](https://huggingface.co/TheBloke/CodeLlama-7B-Instruct-GGUF/tree/main) is the only one that produced decent(ish) results - Download that into `chatbot/models` or choose a better/larger model on your own.
 3) Edit `chatbot/a_settings.py`, change the `model_name` to your own.
-4) *BE WARNED, GIGABYTES WORTH OF DOWNLOAD!* - `0-setup.bat` (Windows) `0-setup.bat` (Linux).
+4) *BE WARNED, GIGABYTES WORTH OF DOWNLOAD!* - `0-setup.bat` (Windows) `0-setup.sh` (Linux).
 
 ## :rocket: LAUNCH
 1) Run `1-bot.bat / 1-bot.sh` to launch the Chatbot.
