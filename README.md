@@ -1,5 +1,5 @@
 ## STORAGE BOXX EXPERIMENTAL AI
-This is the optional experimental AI assistant for Storage Boxx. Take note, this is at a very early stage of "I am figuring things out too".
+This is the optional AI assistant for Storage Boxx. Take note, this is experimental and don't always produce expected results.
 <br><br>
 
 ## :ballot_box_with_check: REQUIREMENTS

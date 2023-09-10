@@ -4,7 +4,7 @@ import b_oto_rodo as oto
 from langchain import PromptTemplate
 from langchain.utilities import SQLDatabase
 from langchain_experimental.sql import SQLDatabaseChain
-import jwt
+import jwt, json
 from flask import Flask, Response, request
 
 # (B) MYSQL + CHAIN
@@ -16,7 +16,7 @@ chain = SQLDatabaseChain.from_llm(
   oto.llm, mysqldb,
   prompt = PromptTemplate(
     template = set.prompt_template,
-    input_variables = ["input", "table_info"]
+    input_variables = ["input", "table_info", "dialect"]
   ),
   ** set.chain_args
 )
@@ -51,12 +51,16 @@ def bot():
     data = dict(request.form)
     if "query" in data:
       try:
-        ans = chain.run(data["query"])
+        ans = chain(data["query"])
         # print(ans)
-        ans = ans["result"]
+        if "intermediate_steps" in ans:
+          ans = ans["intermediate_steps"][0]["input"]
+          ans = ans.replace("\n", "<br>")
+        else:
+          ans["result"]
       except Exception as e:
         print(e)
-        ans = "Opps, the AI bot has run an invalid database query."
+        ans = "Opps, the naughty AI bot seems to have caused a system error."
     else:
       ans = "Where's the question, yo?"
     response = Response(ans, status = 200)

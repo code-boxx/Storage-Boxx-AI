@@ -14,8 +14,4 @@ if "%1"=="CPU" (
 )
 pip install --no-cache-dir --upgrade --force-reinstall llama-cpp-python
 python b_create.py
-if "%1"=="CPU" (
-  echo "Install complete - Please download your own model before running 1-bot.bat"
-) else (
-  python c_bot.py
-)
+echo "Install complete - Please download your own model before running 1-bot.bat"

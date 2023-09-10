@@ -14,7 +14,7 @@ chain = SQLDatabaseChain.from_llm(
   oto.llm, mysqldb,
   prompt = PromptTemplate(
     template = set.prompt_template,
-    input_variables = ["input", "table_info"]
+    input_variables = ["input", "table_info", "dialect"]
   ),
   ** set.chain_args
 )
@@ -27,11 +27,19 @@ while True:
   if query.strip() == "":
     continue
 
-  # How many users are there?
-  # How many boxes of soap are left?
+  # How many users are there in total?
+  # How many boxes of soap are in stock?
   try:
     ans = chain(query)
     print(ans)
     #print(ans.result)
+    """
+    ans.intermediate_steps
+      [0] {"input", "top_k", "dialect", "table_info", "stop"}
+      [1] SQL
+      [2] {"query", "dialect"}
+      [3] SQL
+      [4] SQL RESULT
+    """
   except Exception as e:
     print(e)

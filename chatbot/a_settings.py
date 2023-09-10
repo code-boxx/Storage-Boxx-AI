@@ -1,14 +1,18 @@
-# (A) LOAD MODULES
-import os, torch
-
-# (B) MODEL
+# (A) MODEL
 # hugging face url path, or model file inside models/
-# model_name = "codellama-7b-instruct.Q5_K_M.gguf"
-model_name = "TheBloke/vicuna-7B-v1.5-GPTQ"
+model_name = "codellama-7b-instruct.Q5_K_M.gguf"
 
-# (C) AUTO - PATH
+# (B) AUTO - PATH
+import os
 path_base = os.path.dirname(os.path.realpath(__file__))
 path_models = os.path.join(path_base, "models")
+
+# (C) AUTO - CPU OR GPU
+import torch
+if not any((torch.cuda.is_available(), torch.backends.mps.is_available())):
+  gpu = False
+else:
+  gpu = True 
 
 # (D) LLAMA CPP
 if os.path.isfile(os.path.join(path_models, model_name)):
@@ -37,19 +41,6 @@ if os.path.isfile(os.path.join(path_models, model_name)):
   "top_p" : 0.7,
   """
 
-  # (D3) LLAMA PROMPT TEMPLATE
-  prompt_template = """Given an input question, first create a syntactically correct MYSQL query to run, then look at the results of the query and return the answer.
-  Use the following format:
-
-  SQLQuery: "SQL Query to run"
-  Answer: "Final answer here"
-
-  Only use the following tables:
-
-  {table_info}.
-
-  Question: {input}"""
-
 # (E) HF TRANSFORMER
 else:
   # (E1) TRANSFORMER ENVIRONMENT VARIABLES
@@ -57,47 +48,41 @@ else:
   os.environ["TRANSFORMERS_CACHE"] = path_models
 
   # (E2) MODEL VARIABLES
-  # @TODO - https://huggingface.co/docs/transformers/main_classes/text_generation
+  # https://huggingface.co/docs/transformers/main_classes/text_generation
   model_args = {
     "do_sample" : True,
-    "max_new_tokens" : 2000,
-    "batch_size" : 1,
     "temperature" : 0.7,
     "top_k" : 40,
     "top_p" : 1,
-    "num_return_sequences" : 1
+    "max_new_tokens" : 3000
   }
 
-  # (E3) PROMPT TEMPLATE
-  prompt_template = """Given an input question, first create a syntactically correct MYSQL query to run, then look at the results of the query and return the answer.
-  Use the following format:
+# (F) PROMPT TEMPLATE
+prompt_template = """Given an input question, first create a syntactically correct {dialect} query to run, then look at the results of the query and return the answer.
+Use the following format:
 
-  SQLQuery: "SQL Query to run"
-  Answer: "Final answer here"
+Question: "Question here"
+SQLQuery: "SQL Query to run"
+SQLResult: "Result of the SQLQuery"
+Answer: "Final answer here"
 
-  Only use the following tables:
+Only use the following tables:
 
-  {table_info}.
+{table_info}.
 
-  Question: {input}"""
-
-# (F) AUTO - CPU OR GPU
-if not any((torch.cuda.is_available(), torch.backends.mps.is_available())):
-  gpu = False
-else:
-  gpu = True
+Question: {input}"""
 
 # (G) CHAIN SETTING
 # https://python.langchain.com/docs/use_cases/sql/sqlite
 chain_args = {
   "use_query_checker" : True,
   "top_k" : 3,
-  "return_intermediate_steps" : False,
+  "return_intermediate_steps" : True,
   "verbose" : False
 }
 
 # (H) HTTP ENDPOINT
-http_allow = ["http://localhost"]
+http_allow = ["http://localhost", "https://localhost"]
 http_host = "localhost"
 http_port = 8008
 
@@ -107,7 +92,7 @@ jwt_secret = ""
 
 # (J) MYSQL
 db_include = ["items", "item_batches", "item_mvt", "suppliers", "suppliers_items", "users"]
-db_host = ""
-db_name = ""
-db_user = ""
+db_host = "localhost"
+db_name = "storageboxx"
+db_user = "root"
 db_pass = ""
