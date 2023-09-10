@@ -19,7 +19,7 @@ Take note, this is experimental and doesn't always produce expected results.
 4) *BE WARNED, GIGABYTES WORTH OF DOWNLOAD!* - `0-setup.bat` (Windows) `0-setup.sh` (Linux).
 
 ## :rocket: LAUNCH
-1) Run `1-bot.bat / 1-bot.sh` to launch the Chatbot.
+1) Run `1-bot.bat / 1-bot.sh`, this will deploy the bot at `http://your-site.com:8008`.
 2) The Chatbot is accessible at `http://your-site.com/ai` (must be signed in).
 
 ## :electric_plug: FRAMEWORKS + LINKS
