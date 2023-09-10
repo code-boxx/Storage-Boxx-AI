@@ -11,8 +11,10 @@ import jwt
 from flask import Flask, Response, request
 
 # (B) MYSQL + CHAIN
-# mysql+mysqlconnector://<user>:<password>@<host>[:<port>]/<dbname>
-mysqldb = SQLDatabase.from_uri(f"mysql+mysqlconnector://{set.db_user}:{set.db_pass}@{set.db_host}/{set.db_name}")
+mysqldb = SQLDatabase.from_uri(
+  f"mysql+mysqlconnector://{set.db_user}:{set.db_pass}@{set.db_host}/{set.db_name}",
+  include_tables = set.db_include
+)
 chain = SQLDatabaseChain.from_llm(
   oto.llm, mysqldb,
   prompt = PromptTemplate(
@@ -51,8 +53,12 @@ def bot():
     # (D1-2) ANSWER THE QUESTION
     data = dict(request.form)
     if "query" in data:
-      ans = chain.run(data["query"])
-      ans = ans["result"]
+      try:
+        ans = chain.run(data["query"])
+        ans = ans["result"]
+      except Exception as e:
+        print(e)
+        ans = "Opps, the AI bot has run an invalid database query."
     else:
       ans = "Where's the question, yo?"
     response = Response(ans, status = 200)

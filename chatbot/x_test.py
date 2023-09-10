@@ -6,8 +6,10 @@ from langchain.utilities import SQLDatabase
 from langchain_experimental.sql import SQLDatabaseChain
 
 # (B) MYSQL + CHAIN
-# mysql+mysqlconnector://<user>:<password>@<host>[:<port>]/<dbname>
-mysqldb = SQLDatabase.from_uri(f"mysql+mysqlconnector://{set.db_user}:{set.db_pass}@{set.db_host}/{set.db_name}")
+mysqldb = SQLDatabase.from_uri(
+  f"mysql+mysqlconnector://{set.db_user}:{set.db_pass}@{set.db_host}/{set.db_name}",
+  include_tables = set.db_include
+)
 chain = SQLDatabaseChain.from_llm(
   oto.llm, mysqldb,
   prompt = PromptTemplate(
@@ -25,9 +27,9 @@ while True:
   if query.strip() == "":
     continue
 
-  # How many cakes can a person eat in a day?
-  # What is John's favorite color?
-  # What is John's dream?
-  # What is John wearing?
-  # How old is John?
-  print(chain.run(query))
+  # How many users are there?
+  # How many boxes of soap are left?
+  try:
+    print(chain.run(query))
+  except Exception as e:
+    print(e)
