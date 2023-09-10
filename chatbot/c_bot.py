@@ -64,7 +64,7 @@ def bot():
     else:
       ans = "Where's the question, yo?"
     response = Response(ans, status = 200)
-    response.headers.add("Access-Control-Allow-Origin", request.environ["HTTP_ORIGIN"] )
+    response.headers.add("Access-Control-Allow-Origin", request.environ["HTTP_ORIGIN"])
     response.headers.add("Access-Control-Allow-Credentials", "true")
 
   # (D2) ORIGIN NOT ALLOWED
