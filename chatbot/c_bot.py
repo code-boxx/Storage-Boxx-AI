@@ -1,12 +1,9 @@
 # (A) LOAD SETTINGS & MODULES
-# (A1) SETTINGS & LANGCHAIN
 import a_settings as set
 import b_oto_rodo as oto
 from langchain import PromptTemplate
 from langchain.utilities import SQLDatabase
 from langchain_experimental.sql import SQLDatabaseChain
-
-# (A2) FLASK
 import jwt
 from flask import Flask, Response, request
 
@@ -20,8 +17,8 @@ chain = SQLDatabaseChain.from_llm(
   prompt = PromptTemplate(
     template = set.prompt_template,
     input_variables = ["input", "table_info"]
-  )
-  # verbose = True
+  ),
+  ** set.chain_args
 )
 
 # (C) VERIFY USER
@@ -55,6 +52,7 @@ def bot():
     if "query" in data:
       try:
         ans = chain.run(data["query"])
+        # print(ans)
         ans = ans["result"]
       except Exception as e:
         print(e)

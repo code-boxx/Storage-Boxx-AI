@@ -2,7 +2,7 @@
 // (A) RODO KOA KONFIGU
 require dirname(__DIR__) . DIRECTORY_SEPARATOR . "lib" . DIRECTORY_SEPARATOR . "CORE-Config.php";
 
-// (B) ADD AI TO CORE-CONFIG.PHP
+// (B) PHP MODIFICATIONS
 if (!defined("PATH_CHATBOT")) {
   try {
     // (B1) BACKUP CONFIG FILE
@@ -21,8 +21,33 @@ if (!defined("PATH_CHATBOT")) {
   } catch (Exception $ex) {
     exit("Unable to update CORE-Config.php - " . $ex->getMessage());
   }
+
+  try {
+    // (B3) BACKUP TEMPLATE TOP
+    copy(PATH_PAGES . "TEMPLATE-top.php", PATH_PAGES . "TEMPLATE-top.old");
+
+    // (B4) ADD NEW "AI" MENU ITEM
+    $template = file(PATH_PAGES . "TEMPLATE-top.php");
+    foreach ($template as $j=>$line) {
+      if (strpos($line, "</i> Reports") !== false) {
+        array_splice($template, $j+2, 0, [
+          "\r\n", "<!-- (AI ASSISTANT) ADDED BY INSTALLER -->\r\n",
+          '<a class="nav-link ms-1" href="<?=HOST_BASE?>ai">' . "\r\n",
+          '<i class="text-secondary ico-sm icon-stats-dots"></i> AI Assistant' . "\r\n",
+          '</a>' . "\r\n"
+        ]);
+        break;
+      }
+    }
+
+    // (B5) SAVE
+    file_put_contents(PATH_PAGES . "TEMPLATE-top.php", implode("", $template));
+    unset($template);
+  } catch (Exception $ex) {
+    exit("Unable to update TEMPLATE-top.php - " . $ex->getMessage());
+  }
   
-  // (B3) NEW CHATBOT PATH
+  // (B6) NEW CHATBOT PATH
   define("PATH_CHATBOT", PATH_BASE . "chatbot" . DIRECTORY_SEPARATOR);
 }
 
@@ -42,7 +67,6 @@ $replace = [
   "db_user" => "\"".DB_USER."\"",
   "db_pass" => "\"".DB_PASSWORD."\"",
 ];
-
 $cfg = file(PATH_CHATBOT . "a_settings.py") or exit("Cannot read". PATH_CHATBOT ."a_settings.py");
 foreach ($cfg as $j=>$line) { foreach ($replace as $k=>$v) { if (strpos($line, $k) !== false) {
   $cfg[$j] = "$k = $v # CHANGED BY INSTALLER\r\n";
@@ -51,29 +75,3 @@ foreach ($cfg as $j=>$line) { foreach ($replace as $k=>$v) { if (strpos($line, $
 }}}
 try { file_put_contents(PATH_CHATBOT . "a_settings.py", implode("", $cfg)); }
 catch (Exception $ex) { exit("Error writing to ". PATH_CHATBOT . "a_settings.py"); }
-
-// (E) MODIFY TEMPLATE
-try {
-  // (E1) BACKUP TEMPLATE TOP
-  copy(PATH_PAGES . "TEMPLATE-top.php", PATH_PAGES . "TEMPLATE-top.old");
-
-  // (E2) ADD NEW "AI" MENU ITEM
-  $template = file(PATH_PAGES . "TEMPLATE-top.php");
-  foreach ($template as $j=>$line) {
-    if (strpos($line, "</i> Reports") !== false) {
-      array_splice($template, $j+2, 0, [
-        "\r\n", "<!-- (AI ASSISTANT) ADDED BY INSTALLER -->\r\n",
-        '<a class="nav-link ms-1" href="<?=HOST_BASE?>ai">' . "\r\n",
-        '<i class="text-secondary ico-sm icon-stats-dots"></i> AI Assistant' . "\r\n",
-        '</a>' . "\r\n"
-      ]);
-      break;
-    }
-  }
-
-  // (E3) SAVE
-  file_put_contents(PATH_PAGES . "TEMPLATE-top.php", implode("", $template));
-  unset($template);
-} catch (Exception $ex) {
-  exit("Unable to update TEMPLATE-top.php - " . $ex->getMessage());
-}

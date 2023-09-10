@@ -15,8 +15,8 @@ chain = SQLDatabaseChain.from_llm(
   prompt = PromptTemplate(
     template = set.prompt_template,
     input_variables = ["input", "table_info"]
-  )
-  # verbose = True
+  ),
+  ** set.chain_args
 )
 
 # (C) COMMAND LINE Q&A
@@ -30,6 +30,8 @@ while True:
   # How many users are there?
   # How many boxes of soap are left?
   try:
-    print(chain.run(query))
+    ans = chain(query)
+    print(ans)
+    #print(ans.result)
   except Exception as e:
     print(e)

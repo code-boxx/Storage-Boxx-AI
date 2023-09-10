@@ -3,8 +3,8 @@ import os, torch
 
 # (B) MODEL
 # hugging face url path, or model file inside models/
+# model_name = "codellama-7b-instruct.Q5_K_M.gguf"
 model_name = "TheBloke/vicuna-7B-v1.5-GPTQ"
-# model_name = "codellama-7b.Q5_K_M.gguf"
 
 # (C) AUTO - PATH
 path_base = os.path.dirname(os.path.realpath(__file__))
@@ -41,9 +41,7 @@ if os.path.isfile(os.path.join(path_models, model_name)):
   prompt_template = """Given an input question, first create a syntactically correct MYSQL query to run, then look at the results of the query and return the answer.
   Use the following format:
 
-  Question: "Question here"
   SQLQuery: "SQL Query to run"
-  SQLResult: "Result of the SQLQuery"
   Answer: "Final answer here"
 
   Only use the following tables:
@@ -74,9 +72,7 @@ else:
   prompt_template = """Given an input question, first create a syntactically correct MYSQL query to run, then look at the results of the query and return the answer.
   Use the following format:
 
-  Question: "Question here"
   SQLQuery: "SQL Query to run"
-  SQLResult: "Result of the SQLQuery"
   Answer: "Final answer here"
 
   Only use the following tables:
@@ -91,16 +87,25 @@ if not any((torch.cuda.is_available(), torch.backends.mps.is_available())):
 else:
   gpu = True
 
-# (G) HTTP ENDPOINT
+# (G) CHAIN SETTING
+# https://python.langchain.com/docs/use_cases/sql/sqlite
+chain_args = {
+  "use_query_checker" : True,
+  "top_k" : 3,
+  "return_intermediate_steps" : False,
+  "verbose" : False
+}
+
+# (H) HTTP ENDPOINT
 http_allow = ["http://localhost"]
 http_host = "localhost"
 http_port = 8008
 
-# (H) JWT
+# (I) JWT
 jwt_algo = ""
 jwt_secret = ""
 
-# (I) MYSQL
+# (J) MYSQL
 db_include = ["items", "item_batches", "item_mvt", "suppliers", "suppliers_items", "users"]
 db_host = ""
 db_name = ""
