@@ -1,5 +1,5 @@
 ## STORAGE BOXX EXPERIMENTAL AI
-This is an optional AI assistant for Storage Boxx - It can **directly query the database and answer the user's questions**.
+This is an optional AI assistant for [Storage Boxx](https://github.com/code-boxx/Storage-Boxx-PHP-Inventory-System) - It can **directly query the database and answer the user's questions**.
 
 Take note, this is experimental and don't always produce expected results.
 <br><br>
