@@ -1,7 +1,7 @@
-## STORAGE BOXX EXPERIMENTAL AI
+## STORAGE BOXX AI ASSISTANT
 This is an optional AI assistant for [Storage Boxx](https://github.com/code-boxx/Storage-Boxx-PHP-Inventory-System) - It can **directly query the database and answer the user's questions**.
 
-Take note, this is experimental and don't always produce expected results.
+Take note, this is experimental and doesn't always produce expected results.
 <br><br>
 
 ## :ballot_box_with_check: REQUIREMENTS
@@ -14,7 +14,7 @@ Take note, this is experimental and don't always produce expected results.
 
 ## :floppy_disk: INSTALLATION
 1) Copy/unzip this module into your existing Storage Boxx folder.
-2) I have tried multiple AI models, [codellama-7b-instruct.Q5_K_M.gguf](https://huggingface.co/TheBloke/CodeLlama-7B-Instruct-GGUF/tree/main) is the only one that produced decent(ish) results - Download that into `chatbot/models` or choose a better/larger model on your own.
+2) I have tried multiple AI models, [codellama-7b-instruct.Q5_K_M.gguf](https://huggingface.co/TheBloke/CodeLlama-7B-Instruct-GGUF/tree/main) is the only one that produced decent(ish) results - Download that into `chatbot/models` or choose a better/larger/smarter model on your own.
 3) Edit `chatbot/a_settings.py`, change the `model_name` to your own.
 4) *BE WARNED, GIGABYTES WORTH OF DOWNLOAD!* - `0-setup.bat` (Windows) `0-setup.sh` (Linux).
 
