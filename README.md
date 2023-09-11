@@ -1,7 +1,7 @@
 ## STORAGE BOXX AI ASSISTANT
-This is an optional AI assistant for [Storage Boxx](https://github.com/code-boxx/Storage-Boxx-PHP-Inventory-System) - It can **directly query the database and answer the user's questions**.
+This is an optional AI assistant for [Storage Boxx](https://github.com/code-boxx/Storage-Boxx-PHP-Inventory-System) - It can **directly query the database to answer the user's questions**.
 
-Take note, this is experimental and doesn't always produce expected results.
+Take note, this module is experimental and doesn't always produce expected results.
 <br><br>
 
 ## :ballot_box_with_check: REQUIREMENTS
